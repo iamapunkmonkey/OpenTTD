@@ -27,6 +27,7 @@
 #include "town.h"
 #include "pathfinder/npf/aystar.h"
 #include "tunnelbridge.h"
+#include "tunnelbridge_map.h"
 #include "command_func.h"
 #include "core/backup_type.hpp"
 #include "core/random_func.hpp"
