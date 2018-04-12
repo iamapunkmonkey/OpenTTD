@@ -163,7 +163,15 @@ static const SpriteID SPR_WINDOW_DEFSIZE             = SPR_OPENTTD_BASE + 168;
 
 static const SpriteID SPR_IMG_CARGOFLOW              = SPR_OPENTTD_BASE + 174;
 
-static const SpriteID SPR_SIGNALS_BASE  = SPR_OPENTTD_BASE + OPENTTD_SPRITE_COUNT;
+/** Sprites for the route step marker. */
+static const SpriteID SPR_ROUTE_STEP_BASE          = SPR_OPENTTD_BASE + OPENTTD_SPRITE_COUNT;
+static const SpriteID SPR_ROUTE_STEP_TOP           = SPR_ROUTE_STEP_BASE + 0;
+static const SpriteID SPR_ROUTE_STEP_MIDDLE        = SPR_ROUTE_STEP_BASE + 1;
+static const SpriteID SPR_ROUTE_STEP_BOTTOM        = SPR_ROUTE_STEP_BASE + 2;
+static const SpriteID SPR_ROUTE_STEP_BOTTOM_SHADOW = SPR_ROUTE_STEP_BASE + 3;
+static const SpriteID ROUTE_STEP_SPRITE_COUNT = 4;
+
+static const SpriteID SPR_SIGNALS_BASE  = SPR_ROUTE_STEP_BASE + ROUTE_STEP_SPRITE_COUNT;
 static const uint16 PRESIGNAL_SPRITE_COUNT                   =  48;
 static const uint16 PRESIGNAL_AND_SEMAPHORE_SPRITE_COUNT     = 112;
 static const uint16 PRESIGNAL_SEMAPHORE_AND_PBS_SPRITE_COUNT = 240;
@@ -292,12 +300,19 @@ static const uint16 RAILTYPE_TUNNEL_BASE_COUNT = 16;
 static const SpriteID SPR_EMPTY_BOUNDING_BOX = SPR_RAILTYPE_TUNNEL_BASE + RAILTYPE_TUNNEL_BASE_COUNT;
 static const uint16 EMPTY_BOUNDING_BOX_SPRITE_COUNT = 1;
 
-/* Black palette sprite, needed for painting (fictive) tiles outside map */
-static const SpriteID SPR_PALETTE_BASE = SPR_EMPTY_BOUNDING_BOX + EMPTY_BOUNDING_BOX_SPRITE_COUNT;
-static const uint16 PALETTE_SPRITE_COUNT = 1;
 
 /* From where can we start putting NewGRFs? */
-static const SpriteID SPR_NEWGRFS_BASE = SPR_PALETTE_BASE + PALETTE_SPRITE_COUNT;
+static const SpriteID SPR_OLDTRACKS_BASE               = SPR_EMPTY_BOUNDING_BOX + EMPTY_BOUNDING_BOX_SPRITE_COUNT + 1;
+static const SpriteID SPR_OLDTRACKS_PHASE1_BASE        = SPR_OLDTRACKS_BASE;
+static const SpriteID SPR_OLDTRACKS_PHASE2_BASE        = SPR_OLDTRACKS_BASE + 10;
+static const SpriteID SPR_OLDTRACKS_PHASE3_BASE        = SPR_OLDTRACKS_BASE + 20;
+static const SpriteID OLDTRACKS_SPRITE_COUNT           = 30;
+/* From where can we start putting NewGRFs? */
+static const SpriteID SPR_NEWGRFS_BASE = SPR_OLDTRACKS_BASE + OLDTRACKS_SPRITE_COUNT;
+
+/* Black palette sprite, needed for painting (fictive) tiles outside map */
+static const SpriteID SPR_PALETTE_BASE = SPR_OLDTRACKS_BASE + OLDTRACKS_SPRITE_COUNT;
+static const uint16 PALETTE_SPRITE_COUNT = 1;
 
 /* Manager face sprites */
 static const SpriteID SPR_GRADIENT = 874; // background gradient behind manager face

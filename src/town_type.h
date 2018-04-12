@@ -105,7 +105,7 @@ enum TownFounding {
 /** It needs to be 8bits, because we save and load it as such */
 typedef SimpleTinyEnumT<TownFounding, byte> TownFoundingByte;
 
-static const uint MAX_LENGTH_TOWN_NAME_CHARS = 32; ///< The maximum length of a town name in characters including '\0'
+static const uint MAX_LENGTH_TOWN_NAME_CHARS = 128; ///< The maximum length of a town name in characters including '\0'
 
 /** Store the maximum and actually transported cargo amount for the current and the last month. */
 template <typename Tstorage>

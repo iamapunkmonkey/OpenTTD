@@ -2489,6 +2489,7 @@ public:
 		WID_TT_STRUCTURES                            = ::WID_TT_STRUCTURES,                            ///< Object structure transparency toggle button.
 		WID_TT_CATENARY                              = ::WID_TT_CATENARY,                              ///< Catenary transparency toggle button.
 		WID_TT_LOADING                               = ::WID_TT_LOADING,                               ///< Loading indicators transparency toggle button.
+		WID_TT_TRACKGRASS                            = ::WID_TT_TRACKGRASS,                            ///< Loading track grass transparency toggle button.
 		WID_TT_END                                   = ::WID_TT_END,                                   ///< End of toggle buttons.
 
 		/* Panel with buttons for invisibility */

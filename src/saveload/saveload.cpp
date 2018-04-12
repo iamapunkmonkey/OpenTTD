@@ -451,6 +451,7 @@ extern const ChunkHandler _linkgraph_chunk_handlers[];
 extern const ChunkHandler _airport_chunk_handlers[];
 extern const ChunkHandler _object_chunk_handlers[];
 extern const ChunkHandler _persistent_storage_chunk_handlers[];
+extern const ChunkHandler _plan_chunk_handlers[];
 
 /** Array of all chunks in a savegame, \c NULL terminated. */
 static const ChunkHandler * const _chunk_handlers[] = {
@@ -487,6 +488,7 @@ static const ChunkHandler * const _chunk_handlers[] = {
 	_airport_chunk_handlers,
 	_object_chunk_handlers,
 	_persistent_storage_chunk_handlers,
+	_plan_chunk_handlers,
 	NULL,
 };
 

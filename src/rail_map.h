@@ -479,6 +479,29 @@ static inline bool HasOnewaySignalBlockingTrackdir(TileIndex tile, Trackdir td)
 			!HasSignalOnTrackdir(tile, td) && IsOnewaySignal(tile, TrackdirToTrack(td));
 }
 
+/**
+ * Return the rail 'age'.
+ */
+static inline byte GetRailAge(TileIndex ti)
+{
+	assert(IsPlainRailTile(ti));
+	/* using high bits of m2: (ok for depots and clear tracks only) */
+	/* m2 used by PBS/YAPP, shifting to m7 -Phazorx */
+	return GB(_me[ti].m7,0,8);
+}
+
+
+/**
+ * Set the rail 'age'.
+ */
+static inline void SetRailAge(TileIndex ti, byte new_age)
+{
+	assert(IsPlainRailTile(ti));
+	/* using high bits of m2: (ok for depots and clear tracks only) */
+	/* m2 used by PBS/YAPP, shifting to m7 -Phazorx */
+	SB(_me[ti].m7, 0, 8, new_age);
+}
+
 
 RailType GetTileRailType(TileIndex tile);
 
@@ -525,6 +548,7 @@ static inline void MakeRailNormal(TileIndex t, Owner o, TrackBits b, RailType r)
 	_m[t].m3 = r;
 	_m[t].m4 = 0;
 	_m[t].m5 = RAIL_TILE_NORMAL << 6 | b;
+	SetRailAge(t, 0);
 	SB(_me[t].m6, 2, 4, 0);
 	_me[t].m7 = 0;
 }
@@ -540,6 +564,17 @@ static inline void MakeRailDepot(TileIndex t, Owner o, DepotID did, DiagDirectio
 	_m[t].m5 = RAIL_TILE_DEPOT << 6 | d;
 	SB(_me[t].m6, 2, 4, 0);
 	_me[t].m7 = 0;
+}
+
+static inline byte GetTrackGrowthPhase(TileIndex ti)
+{
+	return GetRailAge(ti) >> 6;
+}
+
+static inline void ResetRailAge(TileIndex ti)
+{
+	assert(IsPlainRailTile(ti));
+	SetRailAge(ti, 0);
 }
 
 #endif /* RAIL_MAP_H */

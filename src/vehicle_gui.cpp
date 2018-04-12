@@ -422,7 +422,7 @@ struct RefitWindow : public Window {
 			/* Skip this engine if it does not carry anything */
 			if (!e->CanCarryCargo()) continue;
 			/* Skip this engine if we build the list for auto-refitting and engine doesn't allow it. */
-			if (this->auto_refit && !HasBit(e->info.misc_flags, EF_AUTO_REFIT)) continue;
+			if (this->auto_refit && !HasBit(e->info.misc_flags, EF_AUTO_REFIT) && !_settings_game.vehicle.allow_auto_refit) continue;
 
 			/* Loop through all cargoes in the refit mask */
 			int current_index = 0;
@@ -603,6 +603,32 @@ struct RefitWindow : public Window {
 		this->owner = v->owner;
 
 		this->SetWidgetDisabledState(WID_VR_REFIT, this->sel[0] < 0);
+	}
+
+	~RefitWindow()
+	{
+		if (this->window_number != INVALID_VEHICLE) {
+			if (!FocusWindowById(WC_VEHICLE_VIEW, this->window_number)) {
+				if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+				MarkAllRouteStepsDirty(this);
+			}
+		}
+	}
+
+	virtual void OnFocus(Window *previously_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, previously_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
+		}
+	}
+
+	virtual void OnFocusLost(Window *newly_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, newly_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
+		}
 	}
 
 	virtual void OnInit()
@@ -1621,7 +1647,7 @@ public:
 
 			case WID_VL_SORT_BY_PULLDOWN:// Select sorting criteria dropdown menu
 				ShowDropDownMenu(this, this->vehicle_sorter_names, this->vehicles.SortType(), WID_VL_SORT_BY_PULLDOWN, 0,
-						(this->vli.vtype == VEH_TRAIN || this->vli.vtype == VEH_ROAD) ? 0 : (1 << 10));
+						(this->vli.vtype == VEH_TRAIN || this->vli.vtype == VEH_ROAD) ? 0 : (1 << 10), 0, DDSF_LOST_FOCUS);
 				return;
 
 			case WID_VL_LIST: { // Matrix to show vehicles
@@ -1880,6 +1906,16 @@ struct VehicleDetailsWindow : Window {
 
 		this->owner = v->owner;
 		this->tab = TDW_TAB_CARGO;
+	}
+
+	~VehicleDetailsWindow()
+	{
+		if (this->window_number != INVALID_VEHICLE) {
+			if (!FocusWindowById(WC_VEHICLE_VIEW, this->window_number)) {
+				if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+				MarkAllRouteStepsDirty(this);
+			}
+		}
 	}
 
 	/**
@@ -2185,7 +2221,7 @@ struct VehicleDetailsWindow : Window {
 
 			case WID_VD_SERVICE_INTERVAL_DROPDOWN: {
 				const Vehicle *v = Vehicle::Get(this->window_number);
-				ShowDropDownMenu(this, _service_interval_dropdown, v->ServiceIntervalIsCustom() ? (v->ServiceIntervalIsPercent() ? 2 : 1) : 0, widget, 0, 0);
+				ShowDropDownMenu(this, _service_interval_dropdown, v->ServiceIntervalIsCustom() ? (v->ServiceIntervalIsPercent() ? 2 : 1) : 0, widget, 0, 0, 0, DDSF_LOST_FOCUS);
 				break;
 			}
 
@@ -2233,6 +2269,22 @@ struct VehicleDetailsWindow : Window {
 		NWidgetCore *nwi = this->GetWidget<NWidgetCore>(WID_VD_MATRIX);
 		if (nwi != NULL) {
 			this->vscroll->SetCapacityFromWidget(this, WID_VD_MATRIX);
+		}
+	}
+
+	virtual void OnFocus(Window *previously_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, previously_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
+		}
+	}
+
+	virtual void OnFocusLost(Window *newly_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, newly_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
 		}
 	}
 };
@@ -2508,10 +2560,28 @@ public:
 
 	~VehicleViewWindow()
 	{
+		if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+		MarkAllRouteStepsDirty(this);
 		DeleteWindowById(WC_VEHICLE_ORDERS, this->window_number, false);
 		DeleteWindowById(WC_VEHICLE_REFIT, this->window_number, false);
 		DeleteWindowById(WC_VEHICLE_DETAILS, this->window_number, false);
 		DeleteWindowById(WC_VEHICLE_TIMETABLE, this->window_number, false);
+	}
+
+	virtual void OnFocus(Window *previously_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, previously_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
+		}
+	}
+
+	virtual void OnFocusLost(Window *newly_focused_window)
+	{
+		if (HasFocusedVehicleChanged(this->window_number, newly_focused_window)) {
+			if (this->window_number != INVALID_VEHICLE) MarkAllRoutePathsDirty(Vehicle::Get(this->window_number));
+			MarkAllRouteStepsDirty(this);
+		}
 	}
 
 	virtual void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize)

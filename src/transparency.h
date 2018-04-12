@@ -31,6 +31,7 @@ enum TransparencyOption {
 	TO_STRUCTURES, ///< other objects such as transmitters and lighthouses
 	TO_CATENARY,   ///< catenary
 	TO_LOADING,    ///< loading indicators
+	TO_TRACKGRASS, ///< track grass
 	TO_END,
 	TO_INVALID,    ///< Invalid transparency option
 };

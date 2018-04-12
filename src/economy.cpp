@@ -1506,8 +1506,19 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 		 * "via any station" before reserving. We rather produce some more "any station" cargo than
 		 * misrouting it. */
 		IterateVehicleParts(v_start, ReturnCargoAction(st, INVALID_STATION));
-		CommandCost cost = DoCommand(v_start->tile, v_start->index, new_cid | 1U << 6 | 0xFF << 8 | 1U << 16, DC_EXEC, GetCmdRefitVeh(v_start)); // Auto-refit and only this vehicle including artic parts.
-		if (cost.Succeeded()) v->First()->profit_this_year -= cost.GetCost() << 8;
+		SmallMap<CargoID, uint> cap_map;
+		SmallPair<CargoID, uint> *cap;
+		v->First()->GetConsistFreeCapacities(cap_map);
+		cap = cap_map.Find(new_cid);
+		uint av = st->goods[new_cid].cargo.AvailableCount();
+		/* only refit this vehicle if necessary */
+		if (av == 0 || (cap != cap_map.End() && cap->second >= av)) {
+			//DEBUG(misc,0, "No Refit: cap %d, waiting %d", cap->second, st->goods[new_cid].cargo.AvailableCount());
+		} else {
+			//DEBUG(misc,0, "Refit: cap %d, waiting %d", cap != cap_map.End() ? cap->second : 0, st->goods[new_cid].cargo.AvailableCount());
+			CommandCost cost = DoCommand(v_start->tile, v_start->index, new_cid | 1U << 6 | 0xFF << 8 | 1U << 16, DC_EXEC, GetCmdRefitVeh(v_start)); // Auto-refit and only this vehicle including artic parts.
+			if (cost.Succeeded()) v->First()->profit_this_year -= cost.GetCost() << 8;
+		}
 	}
 
 	/* Add new capacity to consist capacity and reserve cargo */
@@ -1715,8 +1726,15 @@ static void LoadUnloadVehicle(Vehicle *front)
 
 		/* This order has a refit, if this is the first vehicle part carrying cargo and the whole vehicle is empty, try refitting. */
 		if (front->current_order.IsRefit() && artic_part == 1) {
-			HandleStationRefit(v, consist_capleft, st, next_station, front->current_order.GetRefitCargo());
-			ge = &st->goods[v->cargo_type];
+			CargoID new_cid = front->current_order.GetRefitCargo();
+			HandleStationRefit(v, consist_capleft, st, next_station, new_cid);
+			/* Set goods entry to refit cargo if there is nothing to load to enable delivery of this cargo to the station */
+			if (new_cid < NUM_CARGO && HasBit(v->GetEngine()->info.refit_mask, new_cid) && st->goods[new_cid].cargo.AvailableCount() == 0) {
+				ge = &st->goods[new_cid];
+			} else {
+				ge = &st->goods[v->cargo_type];
+			}
+			//ge = &st->goods[HasBit(v->GetEngine()->info.refit_mask, new_cid) ? new_cid : v->cargo_type];
 		}
 
 		/* As we're loading here the following link can carry the full capacity of the vehicle. */

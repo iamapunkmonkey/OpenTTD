@@ -76,7 +76,7 @@ enum LockPart {
  */
 static inline WaterTileType GetWaterTileType(TileIndex t)
 {
-	assert(IsTileType(t, MP_WATER));
+	//assert(IsTileType(t, MP_WATER));
 
 	switch (GB(_m[t].m5, WBL_TYPE_BEGIN, WBL_TYPE_COUNT)) {
 		case WBL_TYPE_NORMAL: return HasBit(_m[t].m5, WBL_COAST_FLAG) ? WATER_TILE_COAST : WATER_TILE_CLEAR;
