@@ -867,6 +867,12 @@
     <ClInclude Include="..\src\news_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\music\midi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\music\midifile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\music\null_m.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2253,6 +2259,12 @@
     <ClInclude Include="..\src\script\api\script_cargomonitor.hpp">
       <Filter>Script API</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\script\api\script_client.hpp">
+      <Filter>Script API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\script\api\script_clientlist.hpp">
+      <Filter>Script API</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\script\api\script_company.hpp">
       <Filter>Script API</Filter>
     </ClInclude>
@@ -2446,6 +2458,12 @@
       <Filter>Script API Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\src\script\api\script_cargomonitor.cpp">
+      <Filter>Script API Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\script\api\script_client.cpp">
+      <Filter>Script API Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\script\api\script_clientlist.cpp">
       <Filter>Script API Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\src\script\api\script_company.cpp">
@@ -3045,6 +3063,9 @@
     <ClCompile Include="..\src\music\null_m.cpp">
       <Filter>Music</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\music\midifile.cpp">
+      <Filter>Music</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\music\win32_m.cpp">
       <Filter>Music</Filter>
     </ClCompile>
@@ -3075,6 +3096,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\media\openttd.ico" />
-    <None Include="..\readme.txt" />
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>

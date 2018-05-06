@@ -2157,22 +2157,21 @@ bool AfterLoadGame()
 		/* Animated tiles would sometimes not be actually animated or
 		 * in case of old savegames duplicate. */
 
-		extern TileIndex *_animated_tile_list;
-		extern uint _animated_tile_count;
+		extern SmallVector<TileIndex, 256> _animated_tiles;
 
-		for (uint i = 0; i < _animated_tile_count; /* Nothing */) {
+		for (TileIndex *tile = _animated_tiles.Begin(); tile < _animated_tiles.End(); /* Nothing */) {
 			/* Remove if tile is not animated */
-			bool remove = _tile_type_procs[GetTileType(_animated_tile_list[i])]->animate_tile_proc == NULL;
+			bool remove = _tile_type_procs[GetTileType(*tile)]->animate_tile_proc == NULL;
 
 			/* and remove if duplicate */
-			for (uint j = 0; !remove && j < i; j++) {
-				remove = _animated_tile_list[i] == _animated_tile_list[j];
+			for (TileIndex *j = _animated_tiles.Begin(); !remove && j < tile; j++) {
+				remove = *tile == *j;
 			}
 
 			if (remove) {
-				DeleteAnimatedTile(_animated_tile_list[i]);
+				DeleteAnimatedTile(*tile);
 			} else {
-				i++;
+				tile++;
 			}
 		}
 	}
@@ -2970,6 +2969,19 @@ bool AfterLoadGame()
 #endif
 	}
 
+	if (IsSavegameVersionBefore(198)) {
+		/* Convert towns growth_rate and grow_counter to ticks */
+		Town *t;
+		FOR_ALL_TOWNS(t) {
+			/* 0x8000 = TOWN_GROWTH_RATE_CUSTOM previously */
+			if (t->growth_rate & 0x8000) SetBit(t->flags, TOWN_CUSTOM_GROWTH);
+			if (t->growth_rate != TOWN_GROWTH_RATE_NONE) {
+				t->growth_rate = TownTicksToGameTicks(t->growth_rate & ~0x8000);
+			}
+			/* Add t->index % TOWN_GROWTH_TICKS to spread growth across ticks. */
+			t->grow_counter = TownTicksToGameTicks(t->grow_counter) + t->index % TOWN_GROWTH_TICKS;
+		}
+	}
 
 	/* Station acceptance is some kind of cache */
 	if (IsSavegameVersionBefore(127)) {
