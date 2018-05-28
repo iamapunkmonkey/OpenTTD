@@ -535,6 +535,8 @@ struct VehicleSettings {
 	uint8  repair_cost;                      ///< cost of repairing vehicle
 	bool   ship_collision_avoidance;         ///< ships try to avoid colliding with each other
 	bool   no_train_crash_other_company;     ///< trains cannot crash with trains from other companies
+	bool   allow_auto_refit;                 ///< allow auto refit orders even if GRF does not
+	bool   refit_with_costs;                 ///< apply refit orders with non zero costs
 };
 
 /** Settings related to the economy. */

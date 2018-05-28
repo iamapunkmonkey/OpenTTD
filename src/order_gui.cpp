@@ -1341,7 +1341,7 @@ private:
 		this->can_do_autorefit = false;
 		for (const Vehicle *w = this->vehicle; w != NULL; w = w->IsGroundVehicle() ? w->Next() : NULL) {
 			if (IsEngineRefittable(w->engine_type)) this->can_do_refit = true;
-			if (HasBit(Engine::Get(w->engine_type)->info.misc_flags, EF_AUTO_REFIT)) this->can_do_autorefit = true;
+			if (HasBit(Engine::Get(w->engine_type)->info.misc_flags, EF_AUTO_REFIT) || _settings_game.vehicle.allow_auto_refit) this->can_do_autorefit = true;
 		}
 	}
 

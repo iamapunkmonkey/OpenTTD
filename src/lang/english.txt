@@ -1208,6 +1208,10 @@ STR_CONFIG_SETTING_MAX_BRIDGE_HEIGHT                            :Maximum bridge 
 STR_CONFIG_SETTING_MAX_BRIDGE_HEIGHT_HELPTEXT                   :Maximum height for building bridges
 STR_CONFIG_SETTING_MAX_TUNNEL_LENGTH                            :Maximum tunnel length: {STRING2}
 STR_CONFIG_SETTING_MAX_TUNNEL_LENGTH_HELPTEXT                   :Maximum length for building tunnels
+STR_CONFIG_SETTING_ALLOW_AUTO_REFIT                             :Allow auto refit orders even if GRF set does not: {STRING2}
+STR_CONFIG_SETTING_ALLOW_AUTO_REFIT_HELPTEXT                    :Overrides the GRF sets setting if auto refit is allowd or not.
+STR_CONFIG_SETTING_REFIT_IF_NON_ZERO                            :Apply refit orders with non zero costs: {STRING2}
+STR_CONFIG_SETTING_REFIT_IF_NON_ZERO_HELPTEXT                   :Allow/Deny the executing of refit orders that will cause costs every time.
 STR_CONFIG_SETTING_RAW_INDUSTRY_CONSTRUCTION_METHOD             :Manual primary industry construction method: {STRING2}
 STR_CONFIG_SETTING_RAW_INDUSTRY_CONSTRUCTION_METHOD_HELPTEXT    :Method of funding a primary industry. 'none' means it is not possible to fund any, 'prospecting' means funding is possible, but construction occurs in a random spot on the map and may as well fail, 'as other industries' means raw industries can be constructed by companies like processing industries in any position they like
 STR_CONFIG_SETTING_RAW_INDUSTRY_CONSTRUCTION_METHOD_NONE        :None
