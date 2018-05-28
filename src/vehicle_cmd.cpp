@@ -273,7 +273,7 @@ static int GetRefitCostFactor(const Vehicle *v, EngineID engine_type, CargoID ne
 		}
 	}
 
-	*auto_refit_allowed = e->info.refit_cost == 0;
+	*auto_refit_allowed = (e->info.refit_cost == 0) || _settings_game.vehicle.refit_with_costs;
 	return (v == NULL || v->cargo_type != new_cid) ? e->info.refit_cost : 0;
 }
 
@@ -373,7 +373,7 @@ static CommandCost RefitVehicle(Vehicle *v, bool only_this, uint8 num_vehicles, 
 
 		/* If the vehicle is not refittable, or does not allow automatic refitting,
 		 * count its capacity nevertheless if the cargo matches */
-		bool refittable = HasBit(e->info.refit_mask, new_cid) && (!auto_refit || HasBit(e->info.misc_flags, EF_AUTO_REFIT));
+		bool refittable = HasBit(e->info.refit_mask, new_cid) && (!auto_refit || HasBit(e->info.misc_flags, EF_AUTO_REFIT) || _settings_game.vehicle.allow_auto_refit);
 		if (!refittable && v->cargo_type != new_cid) continue;
 
 		/* Determine best fitting subtype if requested */

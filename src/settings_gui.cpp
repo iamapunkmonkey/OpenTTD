@@ -1648,6 +1648,8 @@ static SettingsContainer &GetSettingsTree()
 			company->Add(new SettingEntry("gui.cycle_signal_types"));
 			company->Add(new SettingEntry("gui.drag_signals_fixed_distance"));
 			company->Add(new SettingEntry("gui.new_nonstop"));
+			company->Add(new SettingEntry("vehicle.allow_auto_refit"));
+			company->Add(new SettingEntry("vehicle.refit_with_costs"));
 			company->Add(new SettingEntry("gui.stop_location"));
 			company->Add(new SettingEntry("company.engine_renew"));
 			company->Add(new SettingEntry("company.engine_renew_months"));
@@ -1659,6 +1661,8 @@ static SettingsContainer &GetSettingsTree()
 			company->Add(new SettingEntry("vehicle.servint_aircraft"));
 			company->Add(new SettingEntry("vehicle.auto_timetable_by_default"));
 			company->Add(new SettingEntry("vehicle.auto_separation_by_default"));
+			company->Add(new SettingEntry("vehicle.allow_auto_refit"));
+			company->Add(new SettingEntry("vehicle.refit_with_costs"));
 			company->Add(new SettingEntry("auto_timetable_separation_rate"));
 			company->Add(new SettingEntry("timetable_autofill_rounding"));
 			company->Add(new SettingEntry("order_occupancy_smoothness"));
