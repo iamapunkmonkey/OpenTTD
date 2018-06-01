@@ -1480,7 +1480,9 @@ bool AfterLoadGame()
 	if (IsSavegameVersionBefore(26)) {
 		Station *st;
 		FOR_ALL_STATIONS(st) {
-			st->last_vehicle_type = VEH_INVALID;
+			for (CargoID c = 0; c < NUM_CARGO; c++) {
+				st->goods[c].last_vehicle_type = VEH_INVALID;
+			}
 		}
 	}
 
@@ -3453,6 +3455,17 @@ bool AfterLoadGame()
 		OrderList *order_list;
 		FOR_ALL_ORDER_LISTS(order_list) {
 			order_list->DebugCheckSanity();
+		}
+	}
+
+	if (SlXvIsFeaturePresent(XSLFI_TRAIN_THROUGH_LOAD, 0, 1)) {
+		Vehicle *v;
+		FOR_ALL_VEHICLES(v) {
+			if (v->cargo_payment == nullptr) {
+				for (Vehicle *u = v; u != NULL; u = u->Next()) {
+					if (HasBit(v->vehicle_flags, VF_CARGO_UNLOADING)) ClrBit(v->vehicle_flags, VF_CARGO_UNLOADING);
+				}
+			}
 		}
 	}
 
